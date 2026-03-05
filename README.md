@@ -1,1 +1,53 @@
-# java_codes
+SUDOKU SOLVER
+
+class Solution {
+
+    public void solveSudoku(char[][] board) {
+        solve(board);
+    }
+
+    private boolean solve(char[][] board) {
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+
+                if (board[i][j] == '.') {
+
+                    for (char c = '1'; c <= '9'; c++) {
+
+                        if (isValid(board, i, j, c)) {
+
+                            board[i][j] = c;
+
+                            if (solve(board))
+                                return true;
+
+                            board[i][j] = '.'; // backtrack
+                        }
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isValid(char[][] board, int row, int col, char c) {
+
+        for (int i = 0; i < 9; i++) {
+
+            if (board[row][i] == c) return false; // row check
+
+            if (board[i][col] == c) return false; // column check
+
+            int r = 3 * (row / 3) + i / 3;
+            int d = 3 * (col / 3) + i % 3;
+
+            if (board[r][d] == c) return false; // 3x3 box
+        }
+
+        return true;
+    }
+}
